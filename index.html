@@ -127,6 +127,131 @@
     .dark-light-transition {
       transition: background-color 0.5s ease, color 0.3s ease;
     }
+    
+    /* Video showcase styles */
+    .video-showcase {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      overflow: hidden;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .video-showcase video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.4));
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    .video-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .play-showcase-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--primary);
+      color: var(--dark);
+      border-radius: 50%;
+      width: 4rem;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .play-showcase-btn:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+    }
+    
+    .play-showcase-btn.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .volume-control {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 3;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .volume-control:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    @media (max-width: 768px) {
+      .video-showcase {
+        padding-bottom: 75%; /* 4:3 aspect ratio for mobile */
+      }
+      
+      .play-showcase-btn {
+        width: 3rem;
+        height: 3rem;
+      }
+      
+      .video-overlay {
+        padding: 1rem;
+      }
+      
+      .video-overlay h2 {
+        font-size: 1.5rem;
+      }
+      
+      .video-overlay p {
+        font-size: 0.875rem;
+      }
+    }
+    
+    /* Loading animation */
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+    
+    .animate-pulse {
+      animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
   </style>
 </head>
 <body class="dark-light-transition">
@@ -157,15 +282,40 @@
             </div>
           </div>
         </div>
-        
-        <div class="mt-4">
-          <h2 class="text-3xl font-bold gradient-text mb-2">Secret Invasion</h2>
-          <p class="text-gray-400 max-w-2xl">Explore the complete collection of episodes from this thrilling series.</p>
-        </div>
       </div>
     </header>
     
-    <!-- Main Content -->
+    <!-- Video Showcase -->
+    <div class="container mx-auto px-4 mt-4">
+      <div class="video-showcase">
+        <video id="showcaseVideo" autoplay muted loop playsinline>
+          <source src="https://imdb-video.media-imdb.com/vi1687406361/1434659607842-pgv4ql-1689606565436.mp4?Expires=1748654627&Signature=dzVUJWzvO~du9BG3jOFMdohZdBOG18p40x3pwDPzeYL8y58I-0n9O1Shu17bdJcvzozN5gRtB61pUnF54-oBhWJpM4A~0DtchiV7zTOWOgGyAn7irYrVADmJs9Wr-WEB8AJDipyWQfuc-OQ-voBplZAiSgUKpU3o8jFHRnlor1~-iSkLtkfPn7p1KbAUac4N3DCCtYKdmnGlNkI7S-FMGJxBFHFHxGzvqinDtEvYRrVMrQparfunygMrv3Ra~jpJpUAqBFfOv~IrXLiWDVFlDKlmaswG5uxvuiyxKfgzdEIMaUMubmpV8GQkC8EcN-T726elTwnUgy82GB0Hufiy2Q__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA">
+          Your browser does not support the video tag.
+        </video>
+        <div class="volume-control" id="volumeControl">
+          <i class="fas fa-volume-up text-white"></i>
+        </div>
+        <div class="play-showcase-btn hidden" id="playShowcaseBtn">
+          <i class="fas fa-play text-xl"></i>
+        </div>
+        <div class="video-overlay" id="videoOverlay">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">Secret Invasion</h2>
+          <p class="text-gray-300 max-w-2xl text-sm md:text-base">
+            Nick Fury learns of a secret invasion of Earth by a faction of shapeshifting Skrulls. 
+            Fury joins his allies, including Everett Ross, Maria Hill and Talos, to stop the Skrulls.
+          </p>
+          <div class="flex items-center mt-4 space-x-3">
+            <button class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition">
+              <i class="fas fa-play mr-2"></i> Watch Now
+            </button>
+            <button class="bg-gray-800 bg-opacity-70 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-700 transition">
+              <i class="fas fa-info-circle mr-2"></i> More Info
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-6">
       <!-- Search and Filters -->
       <div class="mb-8">
