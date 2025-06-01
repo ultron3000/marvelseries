@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WandaVision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ffcc00;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ffdd33;
+    }
+    
+    /* Custom animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    
+    /* Glow effect */
+    .glow-effect {
+      position: relative;
+    }
+    
+    .glow-effect::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0);
+      transition: box-shadow 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .glow-effect:hover::after {
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+    }
+    
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(90deg, #ffcc00, #ff9900);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .movie-card {
+        width: calc(50% - 1rem);
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .movie-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="bg-black text-gray-100 min-h-screen">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm border-b border-yellow-600/20">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+          <i class="fas fa-shield-alt text-black text-xl"></i>
+        </div>
+        <h1 class="text-2xl font-bold gradient-text">WandaVision</h1>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-800 transition">
+          <i class="fas fa-moon text-yellow-500"></i>
+        </button>
+        <button id="search-btn" class="p-2 rounded-full hover:bg-gray-800 transition">
+          <i class="fas fa-search text-yellow-500"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Search Bar (hidden by default) -->
+    <div id="search-bar" class="hidden px-4 pb-4">
+      <div class="relative">
+        <input type="text" placeholder="Search episodes..." 
+               class="w-full bg-gray-900 border border-yellow-600/30 rounded-full py-2 px-4 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+        <i class="fas fa-search absolute left-3 top-3 text-yellow-500"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <section class="mb-12 relative overflow-hidden rounded-xl">
+      <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent z-10"></div>
+      <img src="https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/2842/1382842-i-4d707ce10bf9" 
+           alt="Mission: Impossible Banner" class="w-full h-64 md:h-96 object-cover">
+      <div class="absolute bottom-0 left-0 z-20 p-6 md:p-8">
+        <h2 class="text-3xl md:text-5xl font-bold mb-2 gradient-text">Marvel Series</h2>
+        <p class="text-gray-300 mb-4 max-w-lg">Blends the style of classic sitcoms with the MCU, in which Wanda Maximoff and Vision - two super-powered beings living their ideal suburban lives - begin to suspect that everything is not as it seems.</p>
+        <div class="flex space-x-3">
+          <button class="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-play mr-2"></i> Play All
+          </button>
+          <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-info-circle mr-2"></i> Details
+          </button>
+          </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+      <div class="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
+        <button class="filter-btn active bg-yellow-600 text-black px-4 py-1 rounded-full text-sm font-medium">All</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Sitcom</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Drama</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Sci-Fi</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Superhero</button>
+      </div>
+      
+      <div class="flex items-center space-x-2">
+        <span class="text-gray-400 text-sm">Sort by:</span>
+        <select class="bg-gray-900 border border-gray-700 text-white text-sm rounded-full px-3 py-1 focus:outline-none focus:ring-1 focus:ring-yellow-500">
+          <option>Release Date</option>
+          <option>Film Order</option>
+          <option>Popularity</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Episodes Grid -->
+    <section>
+      <h3 class="text-xl font-semibold mb-6 flex items-center">
+        <i class="fas fa-list-ul text-yellow-500 mr-2"></i>
+        Films
+      </h3>
+      
+      <div id="movies" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <!-- Movie cards will be inserted here by JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 mt-12 py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+              <i class="fas fa-shield-alt text-black text-sm"></i>
+            </div>
+            <span class="text-xl font-bold gradient-text">WandaVision</span>
+          </div>
+          <p class="text-gray-400 text-sm mt-2">© 2023 Marvel Studios Pictures. All rights reserved.</p>
+        </div>
+        
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Playback Modal (hidden by default) -->
+  <div id="playback-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-90">
+    <div class="relative w-full max-w-4xl bg-gray-900 rounded-xl overflow-hidden">
+      <button id="close-modal" class="absolute top-4 right-4 z-50 text-white hover:text-yellow-500 text-2xl">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="aspect-w-16 aspect-h-9">
+        <video id="modal-video" class="w-full" controls>
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="p-6">
+        <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
+        <div class="flex items-center text-gray-400 text-sm mb-4">
+          <span class="mr-4">Film <span id="episode-num"></span></span>
+          <span>Runtime</span>
+        </div>
+        <p id="modal-description" class="text-gray-300 mb-6">
+          Loading description...
+        </p>
+        <div class="flex space-x-3">
+          <button class="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-play mr-2"></i> Play
+          </button>
+          <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-plus mr-2"></i> Watchlist
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Movie data
+    const movies = [
+      { 
+        title: "Filmed Before a Live Studio Audience", 
+        video: "https://macdn.hakunaymatata.com/resource/a8db962b09b9f3f9e88ae1556431bf3a.mp4?Expires=1749464873&Signature=pX-GDuvgwBYDcKjN8KSpF63ayq5Xvya-s6PJ5miB5AKvkq1-bpBSY2-NpQOscLqcC1HcUzmahRIdirOiNDf77FY1biBtzA2gwlTIxW1SfWXgZh~6lg1e5OQFqZkURky9va8fxbu19aXY9DROtGCFdLIb7ppVVi796-2haeQ4CuYzb8eAstLzBjBUSeQ7npGCTRZkD-3PrFy9UnvpzrkmUbMB29VSqZ-zOND4KDLowDoRjQv5lByMKO6afWFN6tPu6vEl-pRH~q~h7VuODw0deRS3ms4sFmd2xcMY54Fxhim3xyGMDwx6cbJeH2-WfEUsCtFFjWxH2C8r3fLwqbwlRA__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/568/890568-h",
+        description: "Wanda and Vision struggle to conceal their powers during dinner with Vision's boss and his wife.",
+        duration: "26 min"
+      },
+      { 
+        title: "Don't Touch That Dial", 
+        video: "https://vgorigin.hakunaymatata.com/resource/c0d9096687d2ec9621a2ba57cbb63889.mp4?Expires=1749466247&KeyName=wefeed&Signature=_BsiAqTCgr92x8tSe6Fzgk6IM0pk3rLVo5DFWfCNOeoy17hQ49W1Xm80tJZz-TQY_FhNxvpqsPFHz1OwEv3UAA",
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/340/890340-h",
+        description: "In an effort to fit in, Wanda and Vision perform a magic act in their community talent show.",
+        duration: "33 min"
+      },
+      { 
+        title: "Now in Color", 
+        video: "https://macdn.hakunaymatata.com/resource/6111116d004211f9858fd6ed624800f6.mp4?Expires=1749466404&Signature=VWIg0x0PLSFEn8M6Xsgr4Yum0N5WE5dRCIbGSJJBvYdpNyQcrEmrn5oexXqW4aPKdksBxpEUgQl3Ml9Fml5BIBEs~vVtezd20UcPsLKDsrEjo5NsoHfr5nmt5D-eJ5iLF5n5dMw-Es9r97qCVLqdlOYj3-wrbx43r6P3-u7hrVzWjgQ5sy7bN22CnDPsBDy-RcSQVL-vzTdWLg1CJIEdGiZGs0R7EMXZxedMwou6FiCrO8GUrzw1KpxncogIQ5dI1JB974GRjdZ~kVdJ0~Ly3094zhPlrIwSlHvQe~m1tHHf6nZ5uAzJphP0~8uJfbtTwZq5wIAbS4iC6YQPzaHQ-g__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/333/890333-h",
+        description: "Wanda's pregnancy fritzes her powers as she and Vision prepare for an accelerated delivery.",
+        duration: "30 min"
+      },
+      { 
+        title: "We Interrupt This Program", 
+        video: "https://macdn.hakunaymatata.com/resource/3ab676f3b533d81aec75060f694615a7.mp4?Expires=1749466031&Signature=EtSs7VeArHLpyDOjJp4kJzNGsTX0e0cuRzpsT92wylniKMFaLdqD85LjYUxUCZ6Qx6GDt7brbMajdR-JF7TfC3tkOWx0voJt74HRedEwQqXi7BhiRlPPJtHsubjlcRQhvcQVIhpXG8DhwjBEQ8-LUuCO9qMTD4Y6JbOzjmZvPFt~mYVa-OjXCsxy5hmoFchVETKyIKlFZnfxViNdD~TOe47aeqzhVEA07iFM2MBBhYlcwdukSQ7p2yoYmeTldr7lcoloiCej~RCi-ewf3BDt47TKPBx7LWpQySBbC-XWcQJ4bH~bjZvyCsbqzyFDa8mh-hS9JPfW83KSWQCBJEWq1g__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/6312/896312-h",
+        description: "Monica Rambeau, tasked with a special assignment regarding sentient weapons, goes missing.",
+        duration: "32 min"
+      },
+      { 
+        title: "On a Very Special Episode...", 
+        video: "https://macdn.hakunaymatata.com/resource/d686aea8ee5b9b0c8352f36f66b04574.mp4?Expires=1749465271&Signature=bxNI0ER2ezjMqOJ3ff6No8E-ULhthP1qAm1SvKW5fF3~6PfMbfGk1y43MPWdBDGX8dYYAGDbeLhNavYoqBMZXXdZJwr0XYp0t9Sr~8s~xbjmhPt6eEZ6q2FXGOzegRV1Ft9mnz15BVuYzMKOSHyWyZZ8d~iopCAF5Kiqwkqr1wSbt4cCxSOMMqOacUfwdXgTTvyuRV~WSsibLQgEyrko5hlSvLznCbxkWQ6JcL~SzQ8gqsPYfhjlZ8iQqy2pn8~0JQq5yKXFSf1WBTKTNLi5S1kZZxISYt~NnrdFid38p6ATXXnLOM8lmSR7FOVUIuTzI2eN5-mjo-AU6SvG2INqvg__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/2235/902235-h",
+        description: "Wanda addresses Vision's worries when he grows suspicious of the neighbors' strange behaviour.",
+        duration: "38 min"
+      },
+      { 
+        title: "All-New Halloween Spooktacular!", 
+        video: "https://macdn.hakunaymatata.com/resource/c56c82d0118c11ec084f71f6140762c3.mp4?Expires=1749464597&Signature=6BfVVXXyuSQdiekd6~VmUZjl3RgmuAbZM2Di6rCymMyGNGFFDGWfU3TCJ7ubtN1OA2KGsCLB~xnYnOqCscqKo4M0EW2oymyLD-ob3WhSWHFXX26et~yFAN5dDRwo0faKjUB~vcdAp9DgYoAijS6Q0c406DILzStOyXkyYBL2PUhfcVkznFV8rDGUtpkJTCLyHfvP2Ly0nKR79sOn6hYckbhxO6pnXCzNjbTajXk90KMZ9q4ofYD-s-rpEtmRluc-tMeuKJfGwevrpcthufSaYom-SjcCAaD2LZENqrONWJyolYCAgy6UXO0z86cSw-Lhzg7VP2IMm~EobBjr1wn3CQ__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/7856/907856-h",
+        description: "Disturbances on Halloween separate Wanda from Vision, who looks into anomalous activity in Westview.",
+        duration: "34 min"
+      },
+      { 
+        title: "Breaking the Fourth Wall", 
+        video: "https://vgorigin.hakunaymatata.com/resource/9a3158e74e7fdd02dfe0da5a9a897813.mp4?Expires=1749470419&KeyName=wefeed&Signature=9a9zDTbalqdLetCM7TZpuaAT_Z4ZdgD1ZUqr9cWlEg2ABYWLw8aIZQK9Gvy1OWWqE7Ff2J9mqvenZKVfG8G-Cw", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/3631/913631-h",
+        description: "Monica plots her return, Wanda navigates unsettling complications, and Vision forms a new alliance.",
+        duration: "34 min"
+      },
+      { 
+        title: "Previously On", 
+        video: "https://vgorigin.hakunaymatata.com/resource/7a22f397e326540cbc4401668558a939.mp4?Expires=1749470751&KeyName=wefeed&Signature=9lBsXZ_jVURy5b1Nu3-obh99-e6bCLt3mGeITiv8eMmLiQ2xD5-xfqBJmBB5Laimk-jNrnSZazvLCZgrnwYUBA",
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/9556/919556-h",
+        description: "Wanda embarks on a troubling journey revisiting her past for insight into her present and future.",
+        duration: "43 min"
+      },
+      { 
+        title: "The Series Finale", 
+        video: "https://macdn.hakunaymatata.com/resource/825e15708d4424a7a3dd3905d4c12e46.mp4?Expires=1749471098&Signature=ywd3wxx-pd3XXn59hbKRSPFPgCNPmxwV6hUUY9HnIP6Rx2F77ECw1adBchaXYGK4k8gQDs8X78kb2Z4ztS2aAMAwLfHZDHwtNE9SZ3jKsKJt36JKXiYdPCuNW6kPoppSEZiYri5OLPxCpfXn6EOCLg~SCZqdfDTLb95S-wGly5rnFh8PdNt7gLHz0jN-ee3VXLSttljLqb5ipEzzmJmqa5~xZ4aKRLPIocsiZGuiz~pfh7ysbKCBeHFPU9yFwzNe3jaYhQQ6slXPTNubnIN9kReie0289434QTqIXvmQHfyExt3Yhefwwt4uWvd12CNDVK1jgdCraUqEh5mIZsFWLA__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/5138/925138-h",
+        description: "The events of WandaVision come to a head, and the destinies of all who took part are determined.",
+        duration: "46 min"
+      },
+    ];
+
+    // DOM elements
+    const container = document.getElementById('movies');
+    const searchBtn = document.getElementById('search-btn');
+    const searchBar = document.getElementById('search-bar');
+    const themeToggle = document.getElementById('theme-toggle');
+    const playbackModal = document.getElementById('playback-modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalVideo = document.getElementById('modal-video');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const episodeNum = document.getElementById('episode-num');
+
+    // Initialize the page
+    function initPage() {
+      // Create movie cards
+      movies.forEach((movie, index) => {
+        const card = document.createElement('div');
+        card.className = `movie-card fade-in delay-${index % 5} glow-effect`;
+        card.innerHTML = `
+          <div class="relative group overflow-hidden rounded-xl cursor-pointer">
+            <img src="${movie.image}" alt="${movie.title}" 
+                 class="w-full h-48 sm:h-56 md:h-64 object-cover rounded-xl transition duration-500 group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+              <div>
+                <h3 class="text-white font-semibold text-lg">${movie.title}</h3>
+                <p class="text-gray-300 text-sm">${movie.duration}</p>
+              </div>
+            </div>
+            <div class="absolute top-3 right-3 bg-black bg-opacity-70 text-yellow-500 rounded-full w-10 h-10 flex items-center justify-center">
+              <i class="fas fa-play"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <h3 class="text-white font-medium">${movie.title}</h3>
+            <div class="flex items-center text-gray-400 text-sm mt-1">
+              <span>Film ${index + 1}</span>
+              <span class="mx-2">•</span>
+              <span>${movie.duration}</span>
+            </div>
+          </div>
+        `;
+        
+        card.addEventListener('click', () => {
+          openModal(movie, index + 1);
+        });
+        
+        container.appendChild(card);
+      });
+
+      // Filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelector('.filter-btn.active').classList.remove('active', 'bg-yellow-600', 'text-black');
+          this.classList.add('active', 'bg-yellow-600', 'text-black');
+        });
+      });
+    }
+
+    // Open modal with movie details
+    function openModal(movie, episodeNumber) {
+      modalTitle.textContent = movie.title;
+      modalDescription.textContent = movie.description;
+      episodeNum.textContent = episodeNumber;
+      modalVideo.src = movie.video;
+      
+      playbackModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeModalHandler() {
+      playbackModal.classList.add('hidden');
+      modalVideo.pause();
+      document.body.style.overflow = '';
+    }
+
+    // Event listeners
+    searchBtn.addEventListener('click', () => {
+      searchBar.classList.toggle('hidden');
+    });
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('bg-gray-100');
+      document.body.classList.toggle('text-gray-900');
+      document.body.classList.toggle('bg-black');
+      document.body.classList.toggle('text-gray-100');
+      
+      const icon = themeToggle.querySelector('i');
+      if (document.body.classList.contains('bg-black')) {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      } else {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      }
+    });
+
+    closeModal.addEventListener('click', closeModalHandler);
+    playbackModal.addEventListener('click', function(e) {
+      if (e.target === this) closeModalHandler();
+    });
+
+    // Initialize the page when loaded
+    window.addEventListener('DOMContentLoaded', initPage);
+  </script>
+</body>
+</html>
