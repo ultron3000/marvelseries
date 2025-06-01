@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daredevil: Born Again</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ffcc00;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ffdd33;
+    }
+    
+    /* Custom animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    
+    /* Glow effect */
+    .glow-effect {
+      position: relative;
+    }
+    
+    .glow-effect::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0);
+      transition: box-shadow 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .glow-effect:hover::after {
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+    }
+    
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(90deg, #ffcc00, #ff9900);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .movie-card {
+        width: calc(50% - 1rem);
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .movie-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="bg-black text-gray-100 min-h-screen">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm border-b border-yellow-600/20">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+          <i class="fas fa-shield-alt text-black text-xl"></i>
+        </div>
+        <h1 class="text-2xl font-bold gradient-text">Daredevil: Born Again</h1>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-800 transition">
+          <i class="fas fa-moon text-yellow-500"></i>
+        </button>
+        <button id="search-btn" class="p-2 rounded-full hover:bg-gray-800 transition">
+          <i class="fas fa-search text-yellow-500"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Search Bar (hidden by default) -->
+    <div id="search-bar" class="hidden px-4 pb-4">
+      <div class="relative">
+        <input type="text" placeholder="Search episodes..." 
+               class="w-full bg-gray-900 border border-yellow-600/30 rounded-full py-2 px-4 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+        <i class="fas fa-search absolute left-3 top-3 text-yellow-500"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <section class="mb-12 relative overflow-hidden rounded-xl">
+      <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent z-10"></div>
+      <img src="https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/160/1741139420160-i" 
+           alt="Citadel Banner" class="w-full h-64 md:h-96 object-cover">
+      <div class="absolute bottom-0 left-0 z-20 p-6 md:p-8">
+        <h2 class="text-3xl md:text-5xl font-bold mb-2 gradient-text">Season 1</h2>
+        <p class="text-gray-300 mb-4 max-w-lg">Matt Murdock finds himself on a collision course with Wilson Fisk when their past identities begin to emerge.</p>
+        <div class="flex space-x-3">
+          <button class="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-play mr-2"></i> Play All
+          </button>
+          <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-info-circle mr-2"></i> Details
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+      <div class="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
+        <button class="filter-btn active bg-yellow-600 text-black px-4 py-1 rounded-full text-sm font-medium">All</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Action</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Drama</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Thriller</button>
+        <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Espionage</button>
+      </div>
+      
+      <div class="flex items-center space-x-2">
+        <span class="text-gray-400 text-sm">Sort by:</span>
+        <select class="bg-gray-900 border border-gray-700 text-white text-sm rounded-full px-3 py-1 focus:outline-none focus:ring-1 focus:ring-yellow-500">
+          <option>Release Date</option>
+          <option>Episode Order</option>
+          <option>Popularity</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Episodes Grid -->
+    <section>
+      <h3 class="text-xl font-semibold mb-6 flex items-center">
+        <i class="fas fa-list-ul text-yellow-500 mr-2"></i>
+        Episodes
+      </h3>
+      
+      <div id="movies" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <!-- Movie cards will be inserted here by JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 mt-12 py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+              <i class="fas fa-shield-alt text-black text-sm"></i>
+            </div>
+            <span class="text-xl font-bold gradient-text">Daredevil</span>
+          </div>
+          <p class="text-gray-400 text-sm mt-2">© 2023 Daredevil Productions. All rights reserved.</p>
+        </div>
+        
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Playback Modal (hidden by default) -->
+  <div id="playback-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-90">
+    <div class="relative w-full max-w-4xl bg-gray-900 rounded-xl overflow-hidden">
+      <button id="close-modal" class="absolute top-4 right-4 z-50 text-white hover:text-yellow-500 text-2xl">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="aspect-w-16 aspect-h-9">
+        <video id="modal-video" class="w-full" controls>
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="p-6">
+        <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
+        <div class="flex items-center text-gray-400 text-sm mb-4">
+          <span class="mr-4">S1 • E<span id="episode-num"></span></span>
+          <span>45 min</span>
+        </div>
+        <p id="modal-description" class="text-gray-300 mb-6">
+          Loading description...
+        </p>
+        <div class="flex space-x-3">
+          <button class="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-play mr-2"></i> Play
+          </button>
+          <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full transition flex items-center">
+            <i class="fas fa-plus mr-2"></i> Watchlist
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Movie data
+    const movies = [
+      { 
+        title: "Heaven's Half Hour", 
+        video: "https://macdn.hakunaymatata.com/resource/7b33895da3d4dfb3b3203ac62f1b4da4.mp4?Expires=1749374495&Signature=xSy~PDhlB8uEIqXA0~y5FOPvZuMarp89qM0dH-OK3Jj~QF9hJS2RaI-jtw9MId4e7w7PonAMyKm10dRd5BrEs00NSltIU7FUX-1fmsHdaZUuUV7nS0p6S1FSwFVrStfvPnQnM3RDpiGEZO7sLicUhZVRMFf15QGyE00lBYavs0Bups8uZhLEHBF82cJYBeSy7s0sgxlGBcQ6FCLWDxMyZT1mwTC6ckxrebblMLh0ont6M2Xw~xTuTCM5TW0XnjyOukpzM3FBXYYGecmmuGGNtyMbGoKCRlQl0V1BXXygGHaT9Lwdl79u~F-iZfJX5~edCsJIl89L-q7IRw6WcZyefw__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/7391/1741108077391-h",
+        description: "Matt Murdock gives up the mask. Wilson Fisk has his sights set to new heights.",
+        duration: "28 min"
+      },
+      { 
+        title: "Optics", 
+        video: "https://macdn.hakunaymatata.com/resource/819c8dc9ae8f3637035aec94dc0eaa78.mp4?Expires=1749378875&Signature=GPyCIvEl3gl15J3qKBOhoDxqPS-YaiPhCOmseugzG8L-2ISX3yeQ38qHbnfPTBsD6dUM8dMRxskw3MbiHlvnywzpiQiVeXckgQecqB0U0jKOrGBc4MoRGV9WmHA7Rwtixs0I1H2ogSj-2R4q9vq8Bdw2VH75Cy8Qn-RHGGq-yqrM7T8bZvNcaNDevGm6Ox8YgDVCsBzpPqDjKDGnUPmE9lbpmwoygw0cv9e4V--jpJw-pdR-zYk0YbJGN2nmq9srDWOVJxe3kLS7gFkuw3BGcB8QwkGNXYiHbB5eMviA2fPwdPa2ItlmdQcRTbP7Gj5Ta~Gh6JuUVV5mvr0WI23IRw__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/7870/1741108137870-h",
+        description: "Matt Murdock gets a new client who's more than he claims to be. Fisk learns the power of optics.",
+        duration: "46 min"
+      },
+      { 
+        title: "The Hollow of His Hand", 
+        video: "https://macdn.hakunaymatata.com/resource/14142bf71c98c33a33fdc621d07f6ed7.mp4?Expires=1749379203&Signature=mq~GBFEz2YOH3ijNBM-DhL2O~hRw7zXMfEmED2~aDEsjgR9ScG7qYlrOxgih6hVkUcUbQa-CabsOV7V-U5rq1SfN0AEwC8tq7tmd6X~VkyBFZKC33vW-4CO8RuCr6f9V74Qu9e2f-x5D0ID31-QBvWnuf9HshVUm1czj4C1UaoUfXqnxfS8YZNqG-20xllqX9uBLlrSCl5iAyD1hYL4psN64GvQ0~uZm1B0bADcuu0cBBiX56dxoHUnf~9pBdj-8DlrLlax2PN1WDtdKHuUQA9Nf9aifc6eWm3G201NnOQesGuuxwlzzT7HA9YuJgH4AFvM1TkvaXNeeQFDGlfDuAg__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/2425/1741703632425-h",
+        description: "The trial of Hector Ayala begins. Fisk's old business associates seek to claim his vacant mantle.",
+        duration: "44 min"
+      },
+      { 
+        title: "Sic Semper Systema", 
+        video: "https://macdn.hakunaymatata.com/resource/30d4ff2aaff48f87ad0d59f4491f1fc6.mp4?Expires=1749373605&Signature=aIbUzfcdmDMdzQPo8rd-mAlRToyQB-C90bc2BXQvTWW2CiflIo3-nvXv4bDRimz1FmnfUageutsbNeRzw92PkdV0OYIMKhQB2yCCGuxXjltF-l4uDsFnqXQcKsSzdPrA0A5bos~wYfWVXgk5vOT0skigpC5bqRhRTOa13BB4mx1SZIyWl-7ZMJUTxr50ZKnUOYwzITM5YrQPXUd6ZVptiPE5GdpBF7saA4CoKVLGqc96J5-nxVJnROlshJYp7Ph0H8yd4VXt21u6mEJgymIugD0Q34zywOiy9-wojziLKqvHW4TR~GbiZWSX7RE8e1rJDkHS0BAMSUIpCkjBxmZ2hA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/4249/1742309324249-h",
+        description: "Matt Murdock and Wilson Fisk's darker halves fight to be unleashed.",
+        duration: "51 min"
+      },
+      { 
+        title: "With Interest", 
+        video: "https://macdn.hakunaymatata.com/resource/a4c973a935f421033d92c5f6a9d1aa4b.mp4?Expires=1749375890&Signature=PrqqT5aJzTgquQ0Tk8z7KKNIVrSVfGMLIwQBLmD1ulPgwjOXlDpmZBdd7Ie33RXLeVC1QNwVCyBcoKtIlDtKtpN07Z1ZvqTRJ3nwQquvM3ZiEZh94HQji4CMPOeAo2RiOZYCHNnb7GazKqBKNUz~niQR4YOh33lUNRFl-HXvmcABASW4EvfRVRfFnQUtJvl9QA7n8WNkboEoULqEbkamlsfzr7OhFLNuSgAFx774Dpqbjp-33HD~Y8QBSuE3SVkfhnMLUTD6tOyBgejHrtfv6JaLL3EWpn3hnPmWMe04ftSWDBk5bbZfWPXFTYFJr-dG3hV874daV-OKvKhA~Mh~bQ__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/1540/1742911611540-h",
+        description: "A day in the life of Matt Murdock gets unexpectedly intense, forcing him to team up with a familiar face.",
+        duration: "39 min"
+      },
+      { 
+        title: "Excessive Force", 
+        video: "https://vgorigin.hakunaymatata.com/tran-audio/20250524/new-a29f2aa048a8603f334490339d3a8f95.mp4?Expires=1749379416&KeyName=wefeed&Signature=FBs20rUvveOjCXDYkcVIWsL3KsEzsHlXiO4LCL6KMWyaOB_q9-8x92glvA1rb3vqhsFOVqLS_Yb58M9g_r9bBw", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/8473/1742911088473-h",
+        description: "When a serial killer terrorizes the streets of New York, the city needs a savior.",
+        duration: "42 min"
+      },
+      { 
+        title: "Art for Art's Sake", 
+        video: "https://macdn.hakunaymatata.com/resource/60749feb7c5d9f33806bff522bf4d49c.mp4?Expires=1749375372&Signature=ZX1~pS2CRdLOpA6MiBcGcji41DbPtHpQFYeEjmx52UUx3iThn6My7FvswIan-I-LnvkqRNRLwNoOSZ-eA40ibaNL0BZUHzcQ1snLGd~6KuX-KzzmYq8LqEE6aLLbRMb09pc7UjCrNSU9piP-XEP7l27r~AWZRf41XMtNCzmJMoutibSaDF81KgDrxFv7XCochi0-rQa~wZ2V2Xz9VbXs-LZQu0qESjKtBOmxllcS-NC~tQw6QBf5vJ7oepdvp6qRMyjZWSvlIrsQZsJHxjDo1E-n3hQh0~~Zqa6ofo74bGYE-1-VNEdbHr95Z8hUxFQeuaeF1WyrZ660JWbW-HZYlw__&Key-Pair-Id=KMHN1LQ1HEUPL", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/7615/1743513947615-h",
+        description: "Daredevil is back and races to stop Muse before he can kill again. Fisk's rivals in the criminal underworld take advantage of the chaos.",
+        duration: "40 min"
+      },
+      { 
+        title: "Isle of Joy", 
+        video: "https://vgorigin.hakunaymatata.com/resource/f740196e1d0f077c5f82fa3821ac2d20.mp4?Expires=1749378587&KeyName=wefeed&Signature=78HYG2GUPVpmx0Rfw9_L-tcQ8xZlaeMdQ2f7RAaORtoUW4ZxsmRb0nPxBE97ndrA67mdI3HOUdjbelHoIhsqAA", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/4147/1744125704147-h",
+        description: "At his inaugural Black and White Ball, Mayor Fisk tightens his grip on New York City. Matt Murdock learns shocking information when an old enemy reaches out.",
+        duration: "49 min"
+      },
+      { 
+        title: "Straight to Hell", 
+        video: "https://vgorigin.hakunaymatata.com/resource/a558f1eccd3bed4a83ea587fef9f06ce.mp4?Expires=1749381505&KeyName=wefeed&Signature=SB5ZnyzKpi9dE7PCfawEqaCUoYDNN_fTPcNsGWs6KPBqGC1X5c5iv1uJIjRxqRd6ZV0W4joj_H3jf8KZLVW1AA", 
+        image: "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/862/1744723490862-h",
+        description: "Mayor Fisk becomes Mayor Kingpin, and Daredevil is unleashed as chaos takes over the city.",
+        duration: "57 min"
+      },
+    ];
+
+    // DOM elements
+    const container = document.getElementById('movies');
+    const searchBtn = document.getElementById('search-btn');
+    const searchBar = document.getElementById('search-bar');
+    const themeToggle = document.getElementById('theme-toggle');
+    const playbackModal = document.getElementById('playback-modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalVideo = document.getElementById('modal-video');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const episodeNum = document.getElementById('episode-num');
+
+    // Initialize the page
+    function initPage() {
+      // Create movie cards
+      movies.forEach((movie, index) => {
+        const card = document.createElement('div');
+        card.className = `movie-card fade-in delay-${index % 5} glow-effect`;
+        card.innerHTML = `
+          <div class="relative group overflow-hidden rounded-xl cursor-pointer">
+            <img src="${movie.image}" alt="${movie.title}" 
+                 class="w-full h-48 sm:h-56 md:h-64 object-cover rounded-xl transition duration-500 group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+              <div>
+                <h3 class="text-white font-semibold text-lg">${movie.title}</h3>
+                <p class="text-gray-300 text-sm">${movie.duration}</p>
+              </div>
+            </div>
+            <div class="absolute top-3 right-3 bg-black bg-opacity-70 text-yellow-500 rounded-full w-10 h-10 flex items-center justify-center">
+              <i class="fas fa-play"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <h3 class="text-white font-medium">${movie.title}</h3>
+            <div class="flex items-center text-gray-400 text-sm mt-1">
+              <span>S1 • E${index + 1}</span>
+              <span class="mx-2">•</span>
+              <span>${movie.duration}</span>
+            </div>
+          </div>
+        `;
+        
+        card.addEventListener('click', () => {
+          openModal(movie, index + 1);
+        });
+        
+        container.appendChild(card);
+      });
+
+      // Filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelector('.filter-btn.active').classList.remove('active', 'bg-yellow-600', 'text-black');
+          this.classList.add('active', 'bg-yellow-600', 'text-black');
+        });
+      });
+    }
+
+    // Open modal with movie details
+    function openModal(movie, episodeNumber) {
+      modalTitle.textContent = movie.title;
+      modalDescription.textContent = movie.description;
+      episodeNum.textContent = episodeNumber;
+      modalVideo.src = movie.video;
+      
+      playbackModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeModalHandler() {
+      playbackModal.classList.add('hidden');
+      modalVideo.pause();
+      document.body.style.overflow = '';
+    }
+
+    // Event listeners
+    searchBtn.addEventListener('click', () => {
+      searchBar.classList.toggle('hidden');
+    });
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('bg-gray-100');
+      document.body.classList.toggle('text-gray-900');
+      document.body.classList.toggle('bg-black');
+      document.body.classList.toggle('text-gray-100');
+      
+      const icon = themeToggle.querySelector('i');
+      if (document.body.classList.contains('bg-black')) {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      } else {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      }
+    });
+
+    closeModal.addEventListener('click', closeModalHandler);
+    playbackModal.addEventListener('click', function(e) {
+      if (e.target === this) closeModalHandler();
+    });
+
+    // Initialize the page when loaded
+    window.addEventListener('DOMContentLoaded', initPage);
+  </script>
+</body>
+</html>
