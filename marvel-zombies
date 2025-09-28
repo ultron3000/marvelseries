@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <title>Marvel Zombies (2025)</title>
+  <style>
+    body {
+      background: #0a0a0a url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 800 800"><path fill="%231a1a1a" d="M400 0h400v400H400zM0 400h400v400H0z"/></svg>');
+      color: #eee;
+      font-family: 'Bangers', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      color: #e23636;
+      text-shadow: 0 0 10px #e23636, 0 0 20px #e23636, 0 0 30px #e23636;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 3em;
+      letter-spacing: 2px;
+      position: relative;
+    }
+    h1::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, transparent, #e23636, transparent);
+    }
+    .episodes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .episode-card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      border: 1px solid #e23636;
+      position: relative;
+    }
+    .episode-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23e23636" opacity="0.1" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20 T100,40 T80,40 T60,40 T40,40 T20,40 Z"/></svg>');
+      pointer-events: none;
+    }
+    .episode-card:hover {
+      transform: scale(1.05) rotate(1deg);
+      box-shadow: 0 0 30px #e23636, 0 0 15px #e23636 inset;
+    }
+    .episode-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      filter: brightness(0.8) contrast(1.2) sepia(0.2);
+      position: relative;
+    }
+    .episode-img::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23e23636" opacity="0.3" d="M30,30 Q40,20 50,30 T70,30 T90,30 T90,50 T70,50 T50,50 T30,50 Z"/></svg>');
+      pointer-events: none;
+    }
+    .episode-info {
+      padding: 15px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+    }
+    .episode-title {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: #f44336;
+    }
+    .play-button {
+      background-color: #e23636;
+      border: none;
+      color: white;
+      padding: 12px 15px;
+      font-size: 1.1em;
+      cursor: pointer;
+      border-radius: 0 0 8px 8px;
+      user-select: none;
+      transition: all 0.3s ease;
+      width: 100%;
+      font-family: 'Bangers', cursive;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+    .play-button::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: #8a1a1a;
+    }
+    .play-button:hover {
+      background-color: #8a1a1a;
+      letter-spacing: 2px;
+    }
+    @media (max-width: 500px) {
+      .episode-img {
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Marvel Zombies</h1>
+  <h2>Season 1</h2>
+  <div class="episodes">
+    <div class="episode-card">
+      <img src="https://wsrv.nl/?url=https://image.tmdb.org/t/p/original/25QjykMVOADHoKBre3bLovFrz0j.jpg" alt="Episode 1" class="episode-img" />
+      <div class="episode-info">
+        <div class="episode-title">Episode 1</div>
+        <button class="play-button" onclick="playEpisode(1)">▶ Play</button>
+      </div>
+    </div>
+    <div class="episode-card">
+      <img src="https://wsrv.nl/?url=https://image.tmdb.org/t/p/original/wHg9X6ufex7RLVNQd8vaeQ1X2QJ.jpg" alt="Episode 2" class="episode-img" />
+      <div class="episode-info">
+        <div class="episode-title">Episode 2</div>
+        <button class="play-button" onclick="playEpisode(2)">▶ Play</button>
+      </div>
+    </div>
+    <div class="episode-card">
+      <img src="https://wsrv.nl/?url=https://image.tmdb.org/t/p/original/8frDsFuOxAVVFzACTMQsk8vDXcP.jpg" alt="Episode 3" class="episode-img" />
+      <div class="episode-info">
+        <div class="episode-title">Episode 3</div>
+        <button class="play-button" onclick="playEpisode(3)">▶ Play</button>
+      </div>
+    </div>
+    <div class="episode-card">
+      <img src="https://wsrv.nl/?url=https://image.tmdb.org/t/p/original/qNQjFDAeqMDA3ISOUBYikkaVEI0.jpg" alt="Episode 4" class="episode-img" />
+      <div class="episode-info">
+        <div class="episode-title">Episode 4</div>
+        <button class="play-button" onclick="playEpisode(4)">▶ Play</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const episodeLinks = {
+      1: 'https://gradejumper.site/lightmist83.live/file2/qfxJgoxM+CVNB4F9jpRo5Fs4pkEATQ0EwyphRxqg5oJwrwb0PUU2M7SCmqIp+PxTLP5d6ktjKVB4z1kG~26nRrLff0Dc1jbbNheA5VZB7bmM4lEmwdaDdhMai62GxGbAa32Bv687iBfy7JZT51vFftbJLmuqH7F0y5CECkhaX04=/MTA4MA==/aW5kZXgubTN1OA==.m3u8',
+      2: 'https://gradejumper.site/rainwhisper40.xyz/file2/Y0EYVi7dt0daFDPM5cG+h9XLg5MHMrC2Sergeh1PnQZkzIwY+4meStASsaVyEfwwXBhqEDCC+yHRj~DeDwFw5qouN53~13VidNCS1S+5r+YPV9AqcVSmlXmCfw2cCXHXnoYvzS2frR84iSBzw6N+ylUzkQ2eZ13VklBPo7Fhygg=/MTA4MA==/aW5kZXgubTN1OA==.m3u8',
+      3: 'https://gradejumper.site/snowblink22.pro/file2/9mRw6oOhPUpNeUvUxa0yQ8QpKonu2006kreM8QnBJUJUXDYSQIB6lKos7aEJkEOEaTQngu1MfbqZ2aJcr3oJaazbz6v9HJWfpLdIuskBUeR+AuPIUxyJvprkBbE9hJyhO1Zh9I4auR3~hx~xuY+CzyT4UGVXgsZw6wISw+CLAGU=/MTA4MA==/aW5kZXgubTN1OA==.m3u8',
+      4: 'https://gradejumper.site/lightmist83.live/file2/~c0yfaB3IPjkwxDB+aVPEiRBudABplWPpZqQPCP8U0h8~gaF7PtvEWHZUxBdhd3bZBDKCe49ISW6DAkuG~qGLwafP9nH3W~A45IazL+3dN5StxCW0~eKrfRhr530NbbA5rmQKrq23W0q9n89zFi+v3JFN6jKQLuheH611LGcHpE=/MTA4MA==/aW5kZXgubTN1OA==.m3u8'
+    };
+
+    function playEpisode(num) {
+      const url = episodeLinks[num];
+      if (!url) return alert('Episode not found');
+      const encodedUrl = encodeURIComponent(url);
+      window.location.href = `player.html?video=${encodedUrl}`;
+    }
+  </script>
+</body>
+</html>
