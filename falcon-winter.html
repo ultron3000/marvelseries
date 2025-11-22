@@ -287,34 +287,48 @@
     </header>
     
     <!-- Video Showcase -->
-    <div class="container mx-auto px-4 mt-4">
-      <div class="video-showcase">
-        <video id="showcaseVideo" autoplay muted loop playsinline>
-          <source src="https://imdb-video.media-imdb.com/vi3689463833/1434659607842-pgv4ql-1619426374216.mp4?Expires=1759371480&Signature=C7o0gIADIThpJgV5hjyn3jV6mwbbU2uHF5JX5lLBkodzTWqF6r28dZZF7jzpazf7zV6DE6mn4TMHg9cRhHZG7yTKoV8Js3ogASODV~Vs4pG1gcfl9s6Iq~C4jabwjHbDEbulePvAOJITbZoTLCTZkuddp83Fqz9tBOg9IOhWP-YMgfAilMxRzQkVqhHRPqLx0OILbuGWocgJKBEQbrISSdeOBYR1k6wJlunOaDXz4raVp6MalepQmlxG~xUUdV13TS0-SSXlZLZ0Bzdzpo72ewbKmeJImqpWzRPlooAtMgHyumKBcC6So~eoYjwP8O0uJLIfIMtp~X07OvHGk~2lqQ__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA">
-          Your browser does not support the video tag.
-        </video>
-        <div class="volume-control" id="volumeControl">
-          <i class="fas fa-volume-up text-white"></i>
-        </div>
-        <div class="play-showcase-btn hidden" id="playShowcaseBtn">
-          <i class="fas fa-play text-xl"></i>
-        </div>
-        <div class="video-overlay" id="videoOverlay">
-          <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">The Falcon and The Winter Soldier</h2>
-          <p class="text-gray-300 max-w-2xl text-sm md:text-base">
-            Sam Wilson and Bucky Barnes team up in a global adventure that tests their abilities and their patience.
-          </p>
-          <div class="flex items-center mt-4 space-x-3">
-            <button class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition">
-              <i class="fas fa-play mr-2"></i> Watch Now
-            </button>
-            <button class="bg-gray-800 bg-opacity-70 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-700 transition">
-              <i class="fas fa-info-circle mr-2"></i> More Info
-            </button>
-          </div>
-        </div>
+<div class="container mx-auto px-4 mt-4">
+  <div class="video-showcase relative">
+
+    <!-- YouTube Iframe -->
+    <iframe 
+      id="showcaseVideo"
+      src="https://www.youtube.com/embed/IWBsDaFWyTE?autoplay=1&mute=1&loop=1&playlist=IWBsDaFWyTE&controls=0&playsinline=1"
+      class="w-full h-full absolute top-0 left-0"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+
+    <!-- Volume Control -->
+    <div class="volume-control" id="volumeControl">
+      <i class="fas fa-volume-up text-white"></i>
+    </div>
+
+    <!-- Play Button Overlay -->
+    <div class="play-showcase-btn hidden" id="playShowcaseBtn">
+      <i class="fas fa-play text-xl"></i>
+    </div>
+
+    <!-- Text Overlay -->
+    <div class="video-overlay" id="videoOverlay">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">The Falcon and The Winter Soldier</h2>
+      <p class="text-gray-300 max-w-2xl text-sm md:text-base">
+        Sam Wilson and Bucky Barnes team up in a global adventure that tests their abilities and their patience.
+      </p>
+      <div class="flex items-center mt-4 space-x-3">
+        <button class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition">
+          <i class="fas fa-play mr-2"></i> Watch Now
+        </button>
+        <button class="bg-gray-800 bg-opacity-70 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-700 transition">
+          <i class="fas fa-info-circle mr-2"></i> More Info
+        </button>
       </div>
     </div>
+
+  </div>
+</div>
+
 <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-6">
       <!-- Search and Filters -->
