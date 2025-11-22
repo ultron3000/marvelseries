@@ -9,6 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Marvel:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- HLS.js (from Tukaram for HLS playback support) -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.1/dist/hls.min.js"></script>
+
   <style>
     /* Custom scrollbar */
     ::-webkit-scrollbar {
@@ -187,7 +191,7 @@
       height: 20px;
     }
     
-    .watchlist-checkbox input {f
+    .watchlist-checkbox input {
       opacity: 0;
       width: 0;
       height: 0;
@@ -227,6 +231,23 @@
       border: solid black;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
+    }
+
+    /* Tukaram-style flexible modal player container */
+    #modal-player {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      background: black;
+    }
+    #modal-player video,
+    #modal-player iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
     }
   </style>
 </head>
@@ -285,10 +306,15 @@
     <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent z-10"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
     
-    <video autoplay muted loop playsinline class="w-full h-64 md:h-96 object-cover object-center">
-      <source src="https://imdb-video.media-imdb.com/vi2263335705/1434659607842-pgv4ql-1637184484200.mp4?Expires=1748652807&Signature=jjpWQ~isUFOQt9w24Hq-R2ujWAFlFOxUmcHcJlGtoB0Bz0uhEaO3B2lYQAni3laiQxo4WhyvE1-OSkVsh3YqDj3oRRlxNeHBcjU3DZ8McGhE27PtcD9jbq1MwtwBvyxBjGWQty4vsqCcQ1MzpAaRImTGaD~AwepgergdpPRJAC7~Sx3le6AR6AJWgyMakEF5gApB3c-OgjgLmd8T4DXp6QAIGp3frupQJoyDm1oYJGil13O7HqxLgwfOSH9lJbJR7cpFBZy2XyCq30H1b4XZm3~KpuH-0oo-WrgIJWiMU5KElTgmeI1Rm9kw8sOVN4R6DC0v64YTDDzCIi5meoTyOA__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA">
-      Your browser does not support the video tag.
-    </video>
+    <div class="relative w-full h-[400px] md:h-[500px] overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+    <iframe
+      src="https://www.youtube.com/embed/5VYb3B1ETlk?autoplay=1&mute=1&loop=1&playlist=5VYb3B1ETlk&controls=0"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      class="absolute top-1/2 left-1/2 w-[177.78vh] h-[100vh] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+    ></iframe>
+  </div>
     
     <div class="absolute bottom-0 left-0 z-20 p-6 md:p-8">
       <div class="flex items-center mb-2">
@@ -324,7 +350,7 @@
 
 
     <!-- Season Navigation -->
-    <div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
+    <div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4 container mx-auto px-4">
       <h3 class="text-xl font-semibold flex items-center">
         <i class="fas fa-tv text-yellow-500 mr-2"></i>
         <span class="marvel-font">EPISODES</span>
@@ -336,7 +362,7 @@
     </div>
 
     <!-- Filters -->
-    <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+    <div class="flex flex-wrap items-center justify-between mb-8 gap-4 container mx-auto px-4">
       <div class="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
         <button class="filter-btn active bg-yellow-600 text-black px-4 py-1 rounded-full text-sm font-medium">All</button>
         <button class="filter-btn bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-full text-sm font-medium">Action</button>
@@ -357,13 +383,14 @@
     </div>
 
     <!-- Episodes Grid -->
-    <section>
+    <section class="container mx-auto px-4">
       <div id="movies" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         <!-- Movie cards will be inserted here by JavaScript -->
       </div>
     </section>
 
     <!-- Cast Section -->
+    <main class="container mx-auto px-4">
     <section class="mt-16">
       <h3 class="text-xl font-semibold mb-6 flex items-center">
         <i class="fas fa-users text-yellow-500 mr-2"></i>
@@ -440,7 +467,7 @@
             </div>
             <span class="text-xl font-bold gradient-text marvel-font">HAWKEYE</span>
           </div>
-          <p class="text-gray-400 text-sm">© 2023 Marvel Studios Productions. All rights reserved.</p>
+          <p class="text-gray-400 text-sm">©  Marvel Studios Productions. All rights reserved.</p>
         </div>
         
         <div>
@@ -482,7 +509,7 @@
     </div>
   </footer>
 
-  <!-- Playback Modal (hidden by default) -->
+  <!-- Playback Modal (Tukaram-style flexible player inside Hawkeye UI) -->
   <div id="playback-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-90 transition-opacity duration-300">
     <div class="relative w-full max-w-4xl bg-gray-900 rounded-xl overflow-hidden shadow-2xl transform transition-all duration-300 scale-95">
       <button id="close-modal" class="absolute top-4 right-4 z-50 text-white hover:text-yellow-500 text-2xl bg-black/50 rounded-full p-2 transition">
@@ -490,9 +517,12 @@
       </button>
       
       <div class="relative">
-        <video id="modal-video" class="w-full" controls poster="https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/3311/1083311-h-9fe5d62a092c">
-          Your browser does not support the video tag.
-        </video>
+        <!-- Flexible player container: video or iframe will be injected here -->
+        <div id="modal-player">
+          <video id="modal-video" class="w-full" controls playsinline>
+            Your browser does not support the video tag.
+          </video>
+        </div>
         <div id="video-progress" class="progress-bar w-full">
           <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%"></div>
         </div>
@@ -616,7 +646,6 @@
     const watchlistItems = document.getElementById('watchlist-items');
     const playbackModal = document.getElementById('playback-modal');
     const closeModal = document.getElementById('close-modal');
-    const modalVideo = document.getElementById('modal-video');
     const modalTitle = document.getElementById('modal-title');
     const modalDescription = document.getElementById('modal-description');
     const episodeNum = document.getElementById('episode-num');
@@ -627,6 +656,170 @@
     const scrollDownBtn = document.getElementById('scroll-down');
     const loadingSpinner = document.getElementById('loading-spinner');
     const seasonBtns = document.querySelectorAll('.season-btn');
+    const modalPlayer = document.getElementById('modal-player');
+
+    // Current HLS instance and current movie index
+    let currentHls = null;
+    let currentMovieIndex = null;
+
+    // Helper: always get the current <video> (we recreate this sometimes)
+    function getModalVideo() {
+      return document.getElementById('modal-video');
+    }
+
+    /* === Tukaram-style helper functions === */
+    function isHls(u) {
+      if (!u) return false;
+      return u.includes('.m3u8') ||
+             u.includes('index-') ||
+             /index.*\.txt/i.test(u) ||
+             u.includes('manifest') ||
+             u.includes('master.m3u8');
+    }
+
+    function isMP4(u) {
+      return /\.mp4($|\?)/i.test(u || '');
+    }
+
+    function isYouTube(u) {
+      return !!(u && (u.includes('youtube.com') ||
+                      u.includes('youtu.be') ||
+                      u.includes('youtube-nocookie.com') ||
+                      u.includes('/embed/')));
+    }
+
+    // Reset modal-player to a fresh standard video element (used on close and before new playback)
+    function resetPlayerContainer() {
+      // Destroy HLS if any
+      if (currentHls) {
+        try { currentHls.destroy(); } catch (e) {}
+        currentHls = null;
+      }
+      // Reset inner HTML
+      modalPlayer.innerHTML = `
+        <video id="modal-video" class="w-full" controls playsinline>
+          Your browser does not support the video tag.
+        </video>
+      `;
+    }
+
+    // Close modal and cleanup
+    function closeModalHandler() {
+      const videoEl = getModalVideo();
+      if (currentHls) {
+        try { currentHls.destroy(); } catch (e) {}
+        currentHls = null;
+      }
+      if (videoEl) {
+        try { videoEl.pause(); } catch(e) {}
+        try { videoEl.removeAttribute('src'); videoEl.load(); } catch(e) {}
+      }
+      resetPlayerContainer();
+      playbackModal.classList.add('hidden');
+      document.body.style.overflow = '';
+      currentMovieIndex = null;
+      playBtn.innerHTML = '<i class="fas fa-play mr-2"></i> Play';
+      progressBarFill.style.width = '0%';
+    }
+
+    // Core: Tukaram-style playInModal
+    function playInModal(title, url, movie, episodeIndex) {
+      // Keep index for watchlist & progress
+      currentMovieIndex = episodeIndex;
+
+      // Basic text info in modal
+      modalTitle.textContent = movie.title;
+      modalDescription.textContent = movie.description;
+      episodeNum.textContent = episodeIndex + 1;
+      modalDuration.textContent = movie.duration;
+      watchlistCheckbox.checked = movie.inWatchlist;
+      progressBarFill.style.width = '0%';
+
+      // Clean slate
+      resetPlayerContainer();
+
+      if (!url) {
+        modalTitle.textContent = title + ' — No playable URL provided';
+        playbackModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      // Streamtape / etc. - iframe hosts
+      if (url.includes('streamtape.com') ||
+          url.includes('openload.co') ||
+          url.includes('vidcdn') ||
+          url.includes('dood')) {
+        modalPlayer.innerHTML = `
+          <iframe src="${url}" width="100%" height="100%" allowfullscreen
+                  allowtransparency allow="autoplay" scrolling="no" frameborder="0"></iframe>`;
+        playbackModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        loadingSpinner.classList.add('hidden');
+        return;
+      }
+
+      // YouTube
+      if (isYouTube(url)) {
+        let embedUrl = url;
+        if (url.includes('watch') && url.includes('v=')) {
+          const vid = new URLSearchParams(url.split('?')[1]).get('v');
+          if (vid) embedUrl = `https://www.youtube.com/embed/${vid}`;
+        } else if (url.includes('youtu.be/')) {
+          const parts = url.split('youtu.be/');
+          if (parts[1]) {
+            const vid = parts[1].split(/[?&]/)[0];
+            embedUrl = `https://www.youtube.com/embed/${vid}`;
+          }
+        }
+        modalPlayer.innerHTML = `
+          <iframe src="${embedUrl}?autoplay=1&modestbranding=1&rel=0"
+                  width="100%" height="100%" allowfullscreen
+                  allow="autoplay; encrypted-media" frameborder="0"></iframe>`;
+        playbackModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        loadingSpinner.classList.add('hidden');
+        return;
+      }
+
+      const videoEl = getModalVideo();
+
+      // HLS
+      if (isHls(url)) {
+        if (Hls.isSupported()) {
+          currentHls = new Hls();
+          currentHls.loadSource(url);
+          currentHls.attachMedia(videoEl);
+          currentHls.on(Hls.Events.MANIFEST_PARSED, () => {
+            playbackModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            loadingSpinner.classList.add('hidden');
+            videoEl.play().catch(() => {});
+          });
+        } else {
+          videoEl.src = url;
+          playbackModal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+          loadingSpinner.classList.add('hidden');
+          videoEl.play().catch(() => {});
+        }
+        return;
+      }
+
+      // MP4
+      if (isMP4(url)) {
+        videoEl.src = url;
+        playbackModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        loadingSpinner.classList.add('hidden');
+        videoEl.play().catch(() => {});
+        return;
+      }
+
+      // Unknown type – fallback to player.html
+      loadingSpinner.classList.add('hidden');
+      window.location.href = `player.html?title=${encodeURIComponent(title)}&video=${encodeURIComponent(url)}`;
+    }
 
     // Initialize the page
     function initPage() {
@@ -663,7 +856,8 @@
         `;
         
         card.addEventListener('click', () => {
-          openModal(movie, index + 1);
+          loadingSpinner.classList.remove('hidden');
+          playInModal(movie.title, movie.video, movie, index);
         });
         
         container.appendChild(card);
@@ -674,7 +868,6 @@
         btn.addEventListener('click', function() {
           document.querySelector('.filter-btn.active').classList.remove('active', 'bg-yellow-600', 'text-black');
           this.classList.add('active', 'bg-yellow-600', 'text-black');
-          // In a real app, you would filter the content here
         });
       });
 
@@ -683,94 +876,55 @@
         btn.addEventListener('click', function() {
           document.querySelector('.season-btn.active').classList.remove('active', 'bg-yellow-600', 'text-black');
           this.classList.add('active', 'bg-yellow-600', 'text-black');
-          // In a real app, you would load the selected season here
         });
       });
 
-      // Initialize watchlist from localStorage
+      // Initialize watchlist from local state
       updateWatchlist();
-    }
-
-    // Open modal with movie details
-    function openModal(movie, episodeNumber) {
-      loadingSpinner.classList.remove('hidden');
-      
-      setTimeout(() => {
-        modalTitle.textContent = movie.title;
-        modalDescription.textContent = movie.description;
-        episodeNum.textContent = episodeNumber;
-        modalDuration.textContent = movie.duration;
-        modalVideo.src = movie.video;
-        watchlistCheckbox.checked = movie.inWatchlist;
-        
-        // Set progress bar to 0
-        progressBarFill.style.width = '0%';
-        
-        playbackModal.classList.remove('hidden');
-        loadingSpinner.classList.add('hidden');
-        
-        // Focus the modal for better accessibility
-        playbackModal.focus();
-      }, 500);
-    }
-
-    // Close modal
-    function closeModalHandler() {
-      playbackModal.classList.add('hidden');
-      modalVideo.pause();
-      document.body.style.overflow = '';
     }
 
     // Update watchlist display
     function updateWatchlist() {
       watchlistItems.innerHTML = '';
-      
       const watchlistMovies = movies.filter(movie => movie.inWatchlist);
-      
       if (watchlistMovies.length === 0) {
         watchlistItems.innerHTML = '<div class="px-4 py-3 text-center text-gray-400">Your watchlist is empty</div>';
         return;
       }
-      
-      watchlistMovies.forEach((movie, index) => {
+      watchlistMovies.forEach((movie, idx) => {
+        const index = movies.indexOf(movie);
         const item = document.createElement('div');
         item.className = 'px-4 py-3 hover:bg-gray-800 transition cursor-pointer flex items-center justify-between';
         item.innerHTML = `
           <div class="flex items-center">
-            <span class="text-yellow-500 text-sm mr-2">${index + 1}.</span>
+            <span class="text-yellow-500 text-sm mr-2">${idx + 1}.</span>
             <span class="text-white text-sm truncate">${movie.title}</span>
           </div>
-          <button class="remove-from-watchlist text-gray-400 hover:text-red-500" data-index="${movies.indexOf(movie)}">
+          <button class="remove-from-watchlist text-gray-400 hover:text-red-500" data-index="${index}">
             <i class="fas fa-times"></i>
           </button>
         `;
-        
         item.querySelector('.remove-from-watchlist').addEventListener('click', (e) => {
           e.stopPropagation();
-          removeFromWatchlist(movies.indexOf(movie));
+          removeFromWatchlist(index);
         });
-        
         item.addEventListener('click', () => {
-          openModal(movie, movies.indexOf(movie) + 1);
+          loadingSpinner.classList.remove('hidden');
+          playInModal(movie.title, movie.video, movie, index);
           watchlistDropdown.classList.add('hidden');
         });
-        
         watchlistItems.appendChild(item);
       });
     }
 
-    // Add to watchlist
     function addToWatchlist(index) {
       movies[index].inWatchlist = true;
       updateWatchlist();
-      // In a real app, you would save to localStorage here
     }
 
-    // Remove from watchlist
     function removeFromWatchlist(index) {
       movies[index].inWatchlist = false;
       updateWatchlist();
-      // In a real app, you would update localStorage here
     }
 
     // Event listeners
@@ -806,33 +960,54 @@
       if (e.target === this) closeModalHandler();
     });
 
+    // Play/pause button for the in-modal video (HLS or MP4 only)
     playBtn.addEventListener('click', () => {
-      if (modalVideo.paused) {
-        modalVideo.play();
+      const videoEl = getModalVideo();
+      if (!videoEl) return;
+      if (videoEl.paused) {
+        videoEl.play();
         playBtn.innerHTML = '<i class="fas fa-pause mr-2"></i> Pause';
       } else {
-        modalVideo.pause();
+        videoEl.pause();
         playBtn.innerHTML = '<i class="fas fa-play mr-2"></i> Play';
       }
     });
 
     watchlistCheckbox.addEventListener('change', function() {
-      const episodeIndex = parseInt(episodeNum.textContent) - 1;
+      if (currentMovieIndex == null) return;
       if (this.checked) {
-        addToWatchlist(episodeIndex);
+        addToWatchlist(currentMovieIndex);
       } else {
-        removeFromWatchlist(episodeIndex);
+        removeFromWatchlist(currentMovieIndex);
       }
     });
 
-    modalVideo.addEventListener('timeupdate', function() {
-      const progress = (modalVideo.currentTime / modalVideo.duration) * 100;
-      progressBarFill.style.width = `${progress}%`;
+    // Progress bar (only works when a video element is present)
+    document.addEventListener('timeupdate', (e) => {
+      const videoEl = getModalVideo();
+      if (!videoEl) return;
     });
-
-    modalVideo.addEventListener('ended', function() {
-      playBtn.innerHTML = '<i class="fas fa-redo mr-2"></i> Replay';
-    });
+    // Direct listener on video element (re-attached whenever we recreate)
+    function attachVideoListeners() {
+      const videoEl = getModalVideo();
+      if (!videoEl) return;
+      videoEl.addEventListener('timeupdate', () => {
+        if (!videoEl.duration) return;
+        const progress = (videoEl.currentTime / videoEl.duration) * 100;
+        progressBarFill.style.width = progress + '%';
+      });
+      videoEl.addEventListener('ended', () => {
+        playBtn.innerHTML = '<i class="fas fa-redo mr-2"></i> Replay';
+      });
+    }
+    // Attach once initially
+    attachVideoListeners();
+    // Also re-attach whenever we resetPlayerContainer
+    const originalReset = resetPlayerContainer;
+    resetPlayerContainer = function() {
+      originalReset();
+      attachVideoListeners();
+    };
 
     scrollDownBtn.addEventListener('click', () => {
       window.scrollTo({
